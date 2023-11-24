@@ -1,3 +1,10 @@
-Silhouette Score: 0.6971117716687905
-Davies_bouldin Score: 0.508282635288074
-Calinski_harabasz Score: 567.2532630893269
+Silhouette Score: 0.6563598071282107
+Davies_bouldin Score: 0.48004470584067915
+Calinski_harabasz Score: 742.0499849102896
+Pairwise_distances Score: 13.19311208416858
+Completeness_score Score: 1.0
+Homogeneity_score Score: 0.75
+V_measure_score Score: 0.8571428571428571
+Adjusted_rand_score Score: 0.7122232916265641
+Adjusted_mutual_info_score Score: 0.8559398922495756
+Fowlkes_mallows_score Score: 0.8146638141250924
