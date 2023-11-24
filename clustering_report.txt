@@ -1,0 +1,3 @@
+Silhouette Score: 0.6971117716687905
+Davies_bouldin Score: 0.508282635288074
+Calinski_harabasz Score: 567.2532630893269
