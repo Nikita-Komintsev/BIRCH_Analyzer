@@ -1,5 +1,6 @@
 """
     python make_blobs.py --samples 500 --features 2 --clusters 4 --cluster_std 1 --output clustered_data.csv
+    --output_image blobs_plot.jpg
 """
 
 import argparse
@@ -31,12 +32,14 @@ def save_to_csv(X,output_file):
     print(f'Data saved to {output_file}')
 
 
-def plot_clusters(X, y):
+def plot_clusters(X, y, output_image):
     # Построение графика кластеров
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
     plt.title('Clustered Data')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
+    plt.savefig(output_image, format='jpeg')
+    print(f'Image saved to {output_image}')
     plt.show()
 
 
@@ -54,6 +57,7 @@ def main():
     parser.add_argument('--return_centers', type=bool, default=False,
                         help='Return cluster centers in addition to data points')
     parser.add_argument('--output', type=str, default='blobs_data.csv', help='Output CSV file name')
+    parser.add_argument('--output_image', type=str, default='blobs_plot.jpg', help='Output image file name')
 
     # Получение аргументов
     args = parser.parse_args()
@@ -74,7 +78,7 @@ def main():
     save_to_csv(X, args.output)
 
     # Построение графика
-    plot_clusters(X, y)
+    plot_clusters(X, y, args.output_image)
 
 
 if __name__ == '__main__':
