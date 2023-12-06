@@ -1,6 +1,5 @@
 """
-    python make_blobs.py --samples 500 --features 2 --clusters 4 --cluster_std 1 --output clustered_data.csv
-    --output_image blobs_plot.jpg
+    python make_blobs.py --samples 500 --features 2 --clusters 4 --cluster_std 1 --output clustered_data.csv --output_image blobs_plot.jpg
 """
 
 import argparse
