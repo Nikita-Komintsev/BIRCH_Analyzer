@@ -1,5 +1,5 @@
 """
-    python make_circles.py --samples 500 --noise 0.1 --output circles_data.csv
+    python make_circles.py --samples 500 --noise 0.1 --output circles_data.csv --output_image circles_plot.jpg
 """
 
 import argparse
@@ -27,12 +27,14 @@ def save_to_csv(X, output_file):
     print(f'Data saved to {output_file}')
 
 
-def plot_circles(X, y):
+def plot_circles(X, y, output_image):
     # Построение графика окружностей
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
     plt.title('Circles Data')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
+    plt.savefig(output_image, format='jpeg')
+    print(f'Image saved to {output_image}')
     plt.show()
 
 
@@ -45,6 +47,7 @@ def main():
     parser.add_argument('--random_state', type=int, default=None, help='Random state for reproducibility')
     parser.add_argument('--factor', type=float, default=0.8, help='Scale factor between inner and outer circle for make_circles')
     parser.add_argument('--output', type=str, default='circles_data.csv', help='Output CSV file name')
+    parser.add_argument('--output_image', type=str, default='circles_plot.jpg', help='Output image file name')
 
     # Получение аргументов
     args = parser.parse_args()
@@ -62,7 +65,7 @@ def main():
     save_to_csv(X, args.output)
 
     # Построение графика
-    plot_circles(X, y)
+    plot_circles(X, y, args.output_image)
 
 
 if __name__ == '__main__':
