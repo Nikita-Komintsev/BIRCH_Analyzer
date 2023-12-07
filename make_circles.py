@@ -22,7 +22,7 @@ def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, fac
 
 def save_to_csv(X, output_file):
     # Сохранение данных в CSV файл
-    df = pd.DataFrame(data=X, columns=['feature_1', 'feature_2'])
+    df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1]})
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 

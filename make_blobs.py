@@ -26,7 +26,7 @@ def generate_clusters(n_samples, n_features, centers, cluster_std=1.0, center_bo
 
 def save_to_csv(X,output_file):
     # Сохранение данных в CSV файл
-    df = pd.DataFrame(data=X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+    df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1]})
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 
