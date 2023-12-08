@@ -86,6 +86,7 @@ def plot_data(X, y, title, output_image):
 
 def main():
     X, y, title = None, None, None
+
     parser = argparse.ArgumentParser(description='Скрипт генерации данных')
     parser.add_argument('--data', type=str, metavar='str', choices=['make_blobs', 'make_circles', 'make_moons'], required=True,
                         help='Тип данных для генерации: make_blobs, make_circles или make_moons. '
