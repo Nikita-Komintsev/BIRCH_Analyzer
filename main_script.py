@@ -18,7 +18,7 @@ def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(
     """
     Генерация данных с использованием make_blobs
     """
-
+    center_box = tuple(center_box)
     X, y = make_blobs(
         n_samples=n_samples,
         n_features=n_features,
@@ -96,7 +96,7 @@ def main():
     parser.add_argument('--features', type=int, metavar='int', default=2, help='Количество фич')
     parser.add_argument('--clusters', type=int, metavar='int', default=4, help='Количество центров (кластеров), которые будут созданы (для make_blobs)')
     parser.add_argument('--cluster_std', type=float, metavar='float', default=1.0, help='Стандартное отклонение кластеров (для make_blobs)')
-    parser.add_argument('--center_box', type=tuple, metavar='tuple (min, max)', default=(-10.0, 10.0),
+    parser.add_argument('--center_box', type=float, nargs=2, metavar=' float (min max)', default=(-10.0, 10.0),
                         help='Границы для каждого центра кластера (для make_blobs)')
     parser.add_argument('--shuffle', type=bool, metavar='bool', default=True, help='Перемешивать точки данных')
     parser.add_argument('--random_state', type=int, metavar='int', default=None,

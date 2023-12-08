@@ -10,6 +10,7 @@ from sklearn.datasets import make_blobs
 
 def generate_clusters(n_samples, n_features, centers, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=True,
                       random_state=None, return_centers=False):
+    center_box = tuple(center_box)
     # Генерация данных с использованием make_blobs
     X, y = make_blobs(
         n_samples=n_samples,
@@ -49,7 +50,7 @@ def main():
     parser.add_argument('--features', type=int, default=2, help='Number of features')
     parser.add_argument('--clusters', type=int, default=4, help='Number of clusters')
     parser.add_argument('--cluster_std', type=float, default=1.0, help='Standard deviation of clusters')
-    parser.add_argument('--center_box', type=tuple, default=(-10.0, 10.0),
+    parser.add_argument('--center_box', type=float, nargs=2, default=(-10.0, 10.0),
                         help='The bounding box for each cluster center')
     parser.add_argument('--shuffle', type=bool, default=True, help='Shuffle the samples')
     parser.add_argument('--random_state', type=int, default=None, help='Random state for reproducibility')
