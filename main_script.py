@@ -1,9 +1,9 @@
 """
-        python merged.py --data_type make_blobs  --samples 500 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
+        python main_script.py --data make_blobs  --samples 500 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
 
-        python merged.py --data_type make_circles --samples 500 --noise 0.1 --output circles_data.csv --output_image circles_plot.jpg
+        python main_script.py --data make_circles --samples 500 --noise 0.1 --output circles_data.csv --output_image circles_plot.jpg
 
-        python merged.py --data_type make_moons --samples 500 --noise 0.1 --output moons_data.csv --output_image moons_plot.jpg
+        python main_script.py --data make_moons --samples 500 --noise 0.1 --output moons_data.csv --output_image moons_plot.jpg
 """
 
 
@@ -87,29 +87,32 @@ def plot_data(X, y, title, output_image):
 def main():
     X, y, title = None, None, None
     parser = argparse.ArgumentParser(description='Скрипт генерации данных')
-    parser.add_argument('--data_type', type=str, choices=['make_blobs', 'make_circles', 'make_moons'], required=True,
-                        help='Тип данных для генерации: blobs, circles или moons')
-    parser.add_argument('--samples', type=int, default=300, help='Число точек данных')
-    parser.add_argument('--features', type=int, default=2, help='Количество фич')
-    parser.add_argument('--clusters', type=int, default=4, help='Количество центров (кластеров), которые будут созданы (для make_blobs)')
-    parser.add_argument('--cluster_std', type=float, default=1.0, help='Стандартное отклонение кластеров (для make_blobs)')
-    parser.add_argument('--center_box', type=tuple, default=(-10.0, 10.0),
+    parser.add_argument('--data', type=str, metavar='str', choices=['make_blobs', 'make_circles', 'make_moons'], required=True,
+                        help='Тип данных для генерации: make_blobs, make_circles или make_moons. '
+                             'make_blobs: Генерация данных с кластерами. '
+                             'make_circles: Генерация данных в форме двух вложенных кругов. '
+                             'make_moons: Генерация данных в форме двух полукругов.')
+    parser.add_argument('--samples', type=int, metavar='int', default=300, help='Число точек данных')
+    parser.add_argument('--features', type=int, metavar='int', default=2, help='Количество фич')
+    parser.add_argument('--clusters', type=int, metavar='int', default=4, help='Количество центров (кластеров), которые будут созданы (для make_blobs)')
+    parser.add_argument('--cluster_std', type=float, metavar='float', default=1.0, help='Стандартное отклонение кластеров (для make_blobs)')
+    parser.add_argument('--center_box', type=tuple, metavar='tuple (min, max)', default=(-10.0, 10.0),
                         help='Границы для каждого центра кластера (для make_blobs)')
-    parser.add_argument('--shuffle', type=bool, default=True, help='Перемешивать точки данных')
-    parser.add_argument('--random_state', type=int, default=None,
+    parser.add_argument('--shuffle', type=bool, metavar='bool', default=True, help='Перемешивать точки данных')
+    parser.add_argument('--random_state', type=int, metavar='int', default=None,
                         help='Состояние генератора случайных чисел для воспроизводимости')
-    parser.add_argument('--return_centers', type=bool, default=False,
+    parser.add_argument('--return_centers', type=bool, metavar='bool', default=False,
                         help='Возвращать центры кластеров в дополнение к точкам данных (для make_blobs)')
-    parser.add_argument('--noise', type=float, default=None,
+    parser.add_argument('--noise', type=float, metavar='float', default=None,
                         help='Стандартное отклонение (разброс данных) гауссовского шума (для make_circles, make_moons)')
-    parser.add_argument('--factor', type=float, default=0.8,
+    parser.add_argument('--factor', type=float, metavar='float', default=0.8,
                         help='Масштабный коэффициент между внутренним и внешним кругом (для make_circles)')
-    parser.add_argument('--output', type=str, default='generated_data.csv', help='Имя выходного CSV файла')
-    parser.add_argument('--output_image', type=str, default='data_plot.jpg', help='Имя выходного изображения')
+    parser.add_argument('--output', type=str, metavar='str', default='generated_data.csv', help='Имя выходного CSV файла')
+    parser.add_argument('--output_image', type=str, metavar='str', default='data_plot.jpg', help='Имя выходного JPG изображения')
 
     args = parser.parse_args()
 
-    if args.data_type == 'blobs':
+    if args.data == 'make_blobs':
         X, y = generate_blobs(
             args.samples,
             args.features,
@@ -122,7 +125,7 @@ def main():
         )
         title = 'Blobs Data'
 
-    elif args.data_type == 'circles':
+    elif args.data == 'make_circles':
         X, y = generate_circles(
             args.samples,
             shuffle=args.shuffle,
@@ -132,7 +135,7 @@ def main():
         )
         title = 'Circles Data'
 
-    elif args.data_type == 'moons':
+    elif args.data == 'make_moons':
         X, y = generate_moons(
             args.samples,
             shuffle=args.shuffle,
