@@ -113,37 +113,38 @@ def main():
 
     args = parser.parse_args()
 
-    if args.data == 'make_blobs':
-        X, y = generate_blobs(
-            args.samples,
-            args.features,
-            args.clusters,
-            cluster_std=args.cluster_std,
-            center_box=args.center_box,
-            shuffle=args.shuffle,
-            random_state=args.random_state,
-            return_centers=args.return_centers
-        )
-        title = 'Blobs Data'
+    match args.data:
+        case 'make_blobs':
+            X, y = generate_blobs(
+                args.samples,
+                args.features,
+                args.clusters,
+                cluster_std=args.cluster_std,
+                center_box=args.center_box,
+                shuffle=args.shuffle,
+                random_state=args.random_state,
+                return_centers=args.return_centers
+            )
+            title = 'Blobs Data'
 
-    elif args.data == 'make_circles':
-        X, y = generate_circles(
-            args.samples,
-            shuffle=args.shuffle,
-            noise=args.noise,
-            random_state=args.random_state,
-            factor=args.factor
-        )
-        title = 'Circles Data'
+        case 'make_circles':
+            X, y = generate_circles(
+                args.samples,
+                shuffle=args.shuffle,
+                noise=args.noise,
+                random_state=args.random_state,
+                factor=args.factor
+            )
+            title = 'Circles Data'
 
-    elif args.data == 'make_moons':
-        X, y = generate_moons(
-            args.samples,
-            shuffle=args.shuffle,
-            noise=args.noise,
-            random_state=args.random_state
-        )
-        title = 'Moons Data'
+        case 'make_moons':
+            X, y = generate_moons(
+                args.samples,
+                shuffle=args.shuffle,
+                noise=args.noise,
+                random_state=args.random_state
+            )
+            title = 'Moons Data'
 
     save_to_csv(X, args.output)
     plot_data(X, y, title, args.output_image)
