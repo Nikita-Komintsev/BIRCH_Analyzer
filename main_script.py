@@ -1,4 +1,9 @@
-# @file main_script.py
+"""@package main_script.py
+    Этот скрипт представляет собой программу на языке Python для генерации синтетических данных с использованием различных функций из библиотеки scikit-learn,
+     а также для сохранения данных в файл CSV и построения графика для визуализации данных.
+"""
+
+# main_script.py
 
 import argparse
 import pandas as pd
@@ -11,16 +16,18 @@ def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(
     """
     Генерация данных с использованием make_blobs.
 
-    @param n_samples: Число точек данных.
-    @param n_features: Количество фич.
-    @param centers: Количество центров (кластеров), которые будут созданы.
-    @param cluster_std: Стандартное отклонение кластеров. По умолчанию 1.0.
-    @param center_box: Границы для каждого центра кластера. По умолчанию (-10.0, 10.0).
-    @param shuffle: Перемешивать точки данных. По умолчанию True.
-    @param random_state: Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
-    @param return_centers: Возвращать центры кластеров в дополнение к точкам данных. По умолчанию False.
+    Args:
+        n_samples (int): Число точек данных.
+        n_features (int): Количество фич.
+        centers (int): Количество центров (кластеров), которые будут созданы.
+        cluster_std (float, optional): Стандартное отклонение кластеров. По умолчанию 1.0.
+        center_box (tuple, optional): Границы для каждого центра кластера. По умолчанию (-10.0, 10.0).
+        shuffle (bool, optional): Перемешивать точки данных. По умолчанию True.
+        random_state (int, optional): Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
+        return_centers (bool, optional): Возвращать центры кластеров в дополнение к точкам данных. По умолчанию False.
 
-    @return: Данные X и метки y (или X, y, centers, если return_centers=True).
+    Returns:
+        tuple: Данные X и метки y (или X, y, centers, если return_centers=True).
     """
     center_box = tuple(center_box)
     X, y = make_blobs(
@@ -35,17 +42,20 @@ def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(
     )
     return X, y
 
+
 def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, factor=0.8):
     """
     Генерация данных с использованием make_circles.
 
-    @param n_samples: Число точек данных.
-    @param shuffle: Перемешивать точки данных. По умолчанию True.
-    @param noise: Стандартное отклонение (разброс данных) гауссовского шума. По умолчанию None.
-    @param random_state: Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
-    @param factor: Масштабный коэффициент между внутренним и внешним кругом. По умолчанию 0.8.
+    Args:
+        n_samples (int): Число точек данных.
+        shuffle (bool, optional): Перемешивать точки данных. По умолчанию True.
+        noise (float, optional): Стандартное отклонение (разброс данных) гауссовского шума. По умолчанию None.
+        random_state (int, optional): Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
+        factor (float, optional): Масштабный коэффициент между внутренним и внешним кругом. По умолчанию 0.8.
 
-    @return: Данные X и метки y.
+    Returns:
+        tuple: Данные X и метки y.
     """
     X, y = make_circles(
         n_samples=n_samples,
@@ -56,16 +66,19 @@ def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, fac
     )
     return X, y
 
+
 def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
     """
     Генерация данных с использованием make_moons.
 
-    @param n_samples: Число точек данных.
-    @param shuffle: Перемешивать точки данных. По умолчанию True.
-    @param noise: Стандартное отклонение (разброс данных) гауссовского шума. По умолчанию None.
-    @param random_state: Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
+    Args:
+        n_samples (int): Число точек данных.
+        shuffle (bool, optional): Перемешивать точки данных. По умолчанию True.
+        noise (float, optional): Стандартное отклонение (разброс данных) гауссовского шума. По умолчанию None.
+        random_state (int, optional): Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
 
-    @return: Данные X и метки y.
+    Returns:
+        tuple: Данные X и метки y.
     """
     X, y = make_moons(
         n_samples=n_samples,
@@ -80,10 +93,9 @@ def save_to_csv(X, output_file):
     """
     Сохранение данных в CSV файл.
 
-    @param X: Данные.
-    @param output_file: Имя выходного CSV файла.
-
-    @return: None
+    Args:
+        X (numpy.ndarray): Данные.
+        output_file (str): Имя выходного CSV файла.
     """
     if X.shape[1] == 1:
         df = pd.DataFrame(data={'1 feature': X[:, 0]})
@@ -94,16 +106,16 @@ def save_to_csv(X, output_file):
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 
+
 def plot_data(X, y, title, output_image):
     """
     Построение графика.
 
-    @param X: Данные.
-    @param y: Метки классов.
-    @param title: Заголовок графика.
-    @param output_image: Имя выходного JPG изображения.
-
-    @return: None
+    Args:
+        X (numpy.ndarray): Данные.
+        y (numpy.ndarray): Метки классов.
+        title (str): Заголовок графика.
+        output_image (str): Имя выходного JPG изображения.
     """
     fig = plt.figure()
 
@@ -148,26 +160,25 @@ def plot_data(X, y, title, output_image):
     plt.ylabel('Y')
     plt.savefig(output_image, format='jpeg')
     print(f'Image saved to {output_image}')
-    # plt.show()
 
 
 def main():
     """
     Основная функция скрипта.
 
-    @details Функция main является точкой входа в скрипт. Она обрабатывает аргументы командной строки,
-    генерирует данные, сохраняет их в CSV файл и строит график.
+    Пример использования:
 
-    @return: None
+        python main_script.py --data make_blobs  --samples 150 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
+
+        python main_script.py --data make_circles --samples 150 --noise 0 --output circles_data.csv --output_image circles_plot.jpg
+
+        python main_script.py --data make_moons --samples 150 --noise 0 --output moons_data.csv --output_image moons_plot.jpg
     """
     X, y, title = None, None, None
 
     parser = argparse.ArgumentParser(description='Скрипт генерации данных')
     parser.add_argument('--data', type=str, metavar='str', choices=['make_blobs', 'make_circles', 'make_moons'], required=True,
-                        help='Тип данных для генерации: make_blobs, make_circles или make_moons. '
-                             'make_blobs: Генерация данных с кластерами. '
-                             'make_circles: Генерация данных в форме двух вложенных кругов. '
-                             'make_moons: Генерация данных в форме двух полукругов.')
+                        help='Тип данных для генерации: make_blobs, make_circles или make_moons.')
     parser.add_argument('--samples', type=int, metavar='int', default=300, help='Число точек данных')
     parser.add_argument('--features', type=int, metavar='int', default=2, help='Количество фич')
     parser.add_argument('--clusters', type=int, metavar='int', default=4, help='Количество центров (кластеров), которые будут созданы (для make_blobs)')
