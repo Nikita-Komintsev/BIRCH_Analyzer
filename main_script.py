@@ -1,10 +1,4 @@
-"""
-        python main_script.py --data make_blobs  --samples 150 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
-
-        python main_script.py --data make_circles --samples 150 --noise 0 --output circles_data.csv --output_image circles_plot.jpg
-
-        python main_script.py --data make_moons --samples 150 --noise 0 --output moons_data.csv --output_image moons_plot.jpg
-"""
+# @file main_script.py
 
 import argparse
 import pandas as pd
@@ -14,10 +8,21 @@ from sklearn.datasets import make_blobs, make_circles, make_moons
 
 def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=True,
                    random_state=None, return_centers=False):
-    center_box = tuple(center_box)
     """
-       Генерация данных с использованием make_blobs
-       """
+    Генерация данных с использованием make_blobs.
+
+    @param n_samples: Число точек данных.
+    @param n_features: Количество фич.
+    @param centers: Количество центров (кластеров), которые будут созданы.
+    @param cluster_std: Стандартное отклонение кластеров. По умолчанию 1.0.
+    @param center_box: Границы для каждого центра кластера. По умолчанию (-10.0, 10.0).
+    @param shuffle: Перемешивать точки данных. По умолчанию True.
+    @param random_state: Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
+    @param return_centers: Возвращать центры кластеров в дополнение к точкам данных. По умолчанию False.
+
+    @return: Данные X и метки y (или X, y, centers, если return_centers=True).
+    """
+    center_box = tuple(center_box)
     X, y = make_blobs(
         n_samples=n_samples,
         n_features=n_features,
@@ -30,12 +35,18 @@ def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(
     )
     return X, y
 
-
 def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, factor=0.8):
     """
-    Генерация данных с использованием make_circles
-    """
+    Генерация данных с использованием make_circles.
 
+    @param n_samples: Число точек данных.
+    @param shuffle: Перемешивать точки данных. По умолчанию True.
+    @param noise: Стандартное отклонение (разброс данных) гауссовского шума. По умолчанию None.
+    @param random_state: Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
+    @param factor: Масштабный коэффициент между внутренним и внешним кругом. По умолчанию 0.8.
+
+    @return: Данные X и метки y.
+    """
     X, y = make_circles(
         n_samples=n_samples,
         shuffle=shuffle,
@@ -45,11 +56,17 @@ def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, fac
     )
     return X, y
 
-
 def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
     """
-      Генерация данных с использованием make_moons
-      """
+    Генерация данных с использованием make_moons.
+
+    @param n_samples: Число точек данных.
+    @param shuffle: Перемешивать точки данных. По умолчанию True.
+    @param noise: Стандартное отклонение (разброс данных) гауссовского шума. По умолчанию None.
+    @param random_state: Состояние генератора случайных чисел для воспроизводимости. По умолчанию None.
+
+    @return: Данные X и метки y.
+    """
     X, y = make_moons(
         n_samples=n_samples,
         shuffle=shuffle,
@@ -61,7 +78,12 @@ def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
 
 def save_to_csv(X, output_file):
     """
-        Сохранение данных в CSV файл
+    Сохранение данных в CSV файл.
+
+    @param X: Данные.
+    @param output_file: Имя выходного CSV файла.
+
+    @return: None
     """
     if X.shape[1] == 1:
         df = pd.DataFrame(data={'1 feature': X[:, 0]})
@@ -72,14 +94,20 @@ def save_to_csv(X, output_file):
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 
-
 def plot_data(X, y, title, output_image):
     """
-        Построение графика
+    Построение графика.
+
+    @param X: Данные.
+    @param y: Метки классов.
+    @param title: Заголовок графика.
+    @param output_image: Имя выходного JPG изображения.
+
+    @return: None
     """
     fig = plt.figure()
 
-    if X.shape[1] == 1:  # 1 фича
+    if X.shape[1] == 1:
         ax = fig.add_subplot(121)
         ax.scatter(X[:, 0], [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
         ax.set_xlabel('X')
@@ -91,7 +119,7 @@ def plot_data(X, y, title, output_image):
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
 
-    if X.shape[1] == 2:  # 2 фичи
+    if X.shape[1] == 2:
         ax = fig.add_subplot(121)
         ax.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
         ax.set_xlabel('X')
@@ -103,7 +131,7 @@ def plot_data(X, y, title, output_image):
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
 
-    if X.shape[1] > 2: # 3 и более фичи
+    if X.shape[1] > 2:
         ax = fig.add_subplot(121)
         ax.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
         ax.set_xlabel('X')
@@ -124,6 +152,14 @@ def plot_data(X, y, title, output_image):
 
 
 def main():
+    """
+    Основная функция скрипта.
+
+    @details Функция main является точкой входа в скрипт. Она обрабатывает аргументы командной строки,
+    генерирует данные, сохраняет их в CSV файл и строит график.
+
+    @return: None
+    """
     X, y, title = None, None, None
 
     parser = argparse.ArgumentParser(description='Скрипт генерации данных')
