@@ -1,3 +1,11 @@
+"""
+        python main_script.py --data make_blobs  --samples 500 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
+
+        python main_script.py --data make_circles --samples 500 --noise 0.1 --output circles_data.csv --output_image circles_plot.jpg
+
+        python main_script.py --data make_moons --samples 500 --noise 0.1 --output moons_data.csv --output_image moons_plot.jpg
+"""
+
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -48,17 +56,47 @@ def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
 def save_to_csv(X, output_file):
     if X.shape[1] == 1:
         df = pd.DataFrame(data={'X': X[:, 0]})
-    else:
+    elif X.shape[1] == 2:
         df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1]})
+    elif X.shape[1] == 3:
+        df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1], 'Z': X[:, 2]})
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 
 
 def plot_data(X, y, title, output_image):
-    if X.shape[1] == 1:
-        plt.scatter(X[:, 0], [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
-    else:
-        plt.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
+    fig = plt.figure()
+
+    if X.shape[1] == 1:  # Если только одна фича
+        ax = fig.add_subplot(111)
+        ax.scatter(X[:, 0], [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+
+    if X.shape[1] == 2:  # 2 фичи
+        ax = fig.add_subplot(121)  # 2D график
+        ax.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+
+        ax = fig.add_subplot(122, projection='3d')
+        ax.scatter(X[:, 0], X[:, 1], [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
+    if X.shape[1] == 3: # Если у вас ровно три фичи, добавляем 3D график
+        ax = fig.add_subplot(121)
+        ax.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+
+        ax = fig.add_subplot(122, projection='3d')
+        ax.scatter(X[:, 0], X[:, 1], X[:, 2], c=y, cmap='viridis', edgecolors='k', s=50)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
     plt.title(title)
     plt.xlabel('X')
     plt.ylabel('Y')
