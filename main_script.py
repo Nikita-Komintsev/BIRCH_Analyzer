@@ -1,12 +1,3 @@
-"""
-        python main_script.py --data make_blobs  --samples 500 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
-
-        python main_script.py --data make_circles --samples 500 --noise 0.1 --output circles_data.csv --output_image circles_plot.jpg
-
-        python main_script.py --data make_moons --samples 500 --noise 0.1 --output moons_data.csv --output_image moons_plot.jpg
-"""
-
-
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,9 +6,6 @@ from sklearn.datasets import make_blobs, make_circles, make_moons
 
 def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=True,
                    random_state=None, return_centers=False):
-    """
-    Генерация данных с использованием make_blobs
-    """
     center_box = tuple(center_box)
     X, y = make_blobs(
         n_samples=n_samples,
@@ -48,9 +36,6 @@ def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, fac
 
 
 def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
-    """
-    Генерация данных с использованием make_moons
-    """
     X, y = make_moons(
         n_samples=n_samples,
         shuffle=shuffle,
@@ -61,27 +46,25 @@ def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
 
 
 def save_to_csv(X, output_file):
-    """
-    Сохранение данных в CSV файл
-    """
-
-    df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1]})
+    if X.shape[1] == 1:
+        df = pd.DataFrame(data={'X': X[:, 0]})
+    else:
+        df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1]})
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 
 
 def plot_data(X, y, title, output_image):
-    """
-    Построение графика
-    """
-
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
+    if X.shape[1] == 1:
+        plt.scatter(X[:, 0], [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
+    else:
+        plt.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
     plt.title(title)
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.savefig(output_image, format='jpeg')
     print(f'Image saved to {output_image}')
-    plt.show()
+    # plt.show()
 
 
 def main():
