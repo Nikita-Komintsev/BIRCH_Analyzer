@@ -1,9 +1,9 @@
 """
-        python main_script.py --data make_blobs  --samples 500 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
+        python main_script.py --data make_blobs  --samples 150 --features 2 --clusters 4 --cluster_std 1 --output blobs_data.csv --output_image blobs_plot.jpg
 
-        python main_script.py --data make_circles --samples 500 --noise 0.1 --output circles_data.csv --output_image circles_plot.jpg
+        python main_script.py --data make_circles --samples 150 --noise 0 --output circles_data.csv --output_image circles_plot.jpg
 
-        python main_script.py --data make_moons --samples 500 --noise 0.1 --output moons_data.csv --output_image moons_plot.jpg
+        python main_script.py --data make_moons --samples 150 --noise 0 --output moons_data.csv --output_image moons_plot.jpg
 """
 
 import argparse
@@ -15,6 +15,9 @@ from sklearn.datasets import make_blobs, make_circles, make_moons
 def generate_blobs(n_samples, n_features, centers, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=True,
                    random_state=None, return_centers=False):
     center_box = tuple(center_box)
+    """
+       Генерация данных с использованием make_blobs
+       """
     X, y = make_blobs(
         n_samples=n_samples,
         n_features=n_features,
@@ -44,6 +47,9 @@ def generate_circles(n_samples, shuffle=True, noise=None, random_state=None, fac
 
 
 def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
+    """
+      Генерация данных с использованием make_moons
+      """
     X, y = make_moons(
         n_samples=n_samples,
         shuffle=shuffle,
@@ -54,27 +60,39 @@ def generate_moons(n_samples, shuffle=True, noise=None, random_state=None):
 
 
 def save_to_csv(X, output_file):
+    """
+        Сохранение данных в CSV файл
+    """
     if X.shape[1] == 1:
-        df = pd.DataFrame(data={'X': X[:, 0]})
+        df = pd.DataFrame(data={'1 feature': X[:, 0]})
     elif X.shape[1] == 2:
-        df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1]})
-    elif X.shape[1] == 3:
-        df = pd.DataFrame(data={'X': X[:, 0], 'Y': X[:, 1], 'Z': X[:, 2]})
+        df = pd.DataFrame(data={'1 feature': X[:, 0], '2 feature': X[:, 1]})
+    elif X.shape[1] > 2:
+        df = pd.DataFrame(data={f'{i+1} feature': X[:, i] for i in range(X.shape[1])})
     df.to_csv(output_file, index=False)
     print(f'Data saved to {output_file}')
 
 
 def plot_data(X, y, title, output_image):
+    """
+        Построение графика
+    """
     fig = plt.figure()
 
-    if X.shape[1] == 1:  # Если только одна фича
-        ax = fig.add_subplot(111)
+    if X.shape[1] == 1:  # 1 фича
+        ax = fig.add_subplot(121)
         ax.scatter(X[:, 0], [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
 
+        ax = fig.add_subplot(122, projection='3d')
+        ax.scatter(X[:, 0], [0] * len(X), [0] * len(X), c=y, cmap='viridis', edgecolors='k', s=50)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
     if X.shape[1] == 2:  # 2 фичи
-        ax = fig.add_subplot(121)  # 2D график
+        ax = fig.add_subplot(121)
         ax.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
@@ -85,7 +103,7 @@ def plot_data(X, y, title, output_image):
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
 
-    if X.shape[1] == 3: # Если у вас ровно три фичи, добавляем 3D график
+    if X.shape[1] > 2: # 3 и более фичи
         ax = fig.add_subplot(121)
         ax.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', edgecolors='k', s=50)
         ax.set_xlabel('X')
